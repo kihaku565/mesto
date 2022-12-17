@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesto</title>
+    <link rel="stylesheet" href="./pages/index.css">
+</head>
+
+<body class="page">
+    <header class="header">
+        <img class="header__logo" src="./images/header-logo.svg" alt="логотип Mesto">
+    </header>
+    <main class="main">
+        <section class="profile">
+            <img class="profile__avatar" src="./images/profile-avatar.jpg" alt="фото профиля">
+            <div class="profile__info">
+                <h1 class="profile__name">Жак-Ив Кусто</h1>
+                <button class="profile__edit-btn" type="button"></button>
+                <p class="profile__about">Исследователь океана</p>
+            </div>
+            <button class="profile__add-btn"></button>
+        </section>
+        <section class="elements">
+            <ul class="elements__list">
+                <li class="element">
+                    <img class="element__pic" src="./images/element- (2).jpg" alt="">
+                    <div class="element__caption">
+                        <h2 class="element__title">Карачаевск</h2>
+                        <button class="element__like-btn"></button>
+                    </div>
+                </li>
+                <li class="element">
+                    <img class="element__pic" src="./images/element- (4).jpg" alt="">
+                    <div class="element__caption">
+                        <h2 class="element__title">Гора Эльбрус</h2>
+                        <button class="element__like-btn"></button>
+                    </div>
+                </li>
+                <li class="element">
+                    <img class="element__pic" src="./images/element- (1).jpg" alt="">
+                    <div class="element__caption">
+                        <h2 class="element__title">Домбай</h2>
+                        <button class="element__like-btn"></button>
+                    </div>
+                </li>
+                <li class="element">
+                    <img class="element__pic" src="./images/element- (5).jpg" alt="">
+                    <div class="element__caption">
+                        <h2 class="element__title">Карачаевск</h2>
+                        <button class="element__like-btn"></button>
+                    </div>
+                </li>
+                <li class="element">
+                    <img class="element__pic" src="./images/element- (6).jpg" alt="">
+                    <div class="element__caption">
+                        <h2 class="element__title">Гора Эльбрус</h2>
+                        <button class="element__like-btn"></button>
+                    </div>
+                </li>
+                <li class="element">
+                    <img class="element__pic" src="./images/element- (3).jpg" alt="">
+                    <div class="element__caption">
+                        <h2 class="element__title">Домбай</h2>
+                        <button class="element__like-btn"></button>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <footer class="footer">
+        <p class="footer__copyright">&copy;2022 Mesto Russia</p>
+    </footer>
+    <div class="popup">
+        <form class="popup__container">
+            <fieldset class="popup__fieldset">
+                <!-- wtf it's broken??? <legend class="popup__title">Редактировать профиль</legend>-->
+                <h2 class="popup__title">Редактировать профиль</h2>
+                <label class="popup__label">
+                    <input class="popup__input-text" type="text" id="profile-name" value="Жак-Ив Кусто">
+                </label>
+                <label class="popup__label">
+                    <input class="popup__input-text" type="text" id="profile-about" value="Исследователь океана">
+                </label>
+                <button class="popup__save-btn" type="submit">Сохранить</button>
+            </fieldset>
+            <button class="popup__close-btn" type="button"></button>
+        </form>
+    </div>
+    <script src="./scripts/index.js"></script>
+</body>
+
+</html>
