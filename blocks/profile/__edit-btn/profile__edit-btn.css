@@ -19,5 +19,6 @@
     .profile__edit-btn {
         width: calc((100vw - 320px) / (1280 - 320) * (24 - 18) + 18px);
         height: calc((100vw - 320px) / (1280 - 320) * (24 - 18) + 18px);
+        background-size: calc((100vw - 320px) / (1280 - 320) * (10 - 7.5) + 7.5px) calc((100vw - 320px) / (1280 - 320) * (10 - 7.5) + 7.5px);
     }
 }

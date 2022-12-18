@@ -15,10 +15,16 @@
 /* Сумма элементов по ширине блока profile */
 @media screen and (max-width: calc(120px + 30px + 294px + 18px + 24px + 30px + 150px)) {
     .profile__add-btn {
+        background-size: calc((100vw - 320px) / (1280 - 320) * (22 - 16) + 16px) calc((100vw - 320px) / (1280 - 320) * (22 - 16) + 16px);
+    }
+}
+
+/* Сумма элементов по ширине блока profile */
+@media screen and (max-width: calc(120px + 30px + 294px + 18px + 24px + 30px + 150px)) {
+    .profile__add-btn {
         margin-top: 7px;
         margin-left: 0;
         width: 100%;
-        background-size: 16px 16px;
     }
 }
 
