@@ -6,21 +6,21 @@ const nameInput = document.querySelector('#profile-name'); //ввод значе
 const jobInput = document.querySelector('#profile-about'); //ввод значения в поле "увлечения"
 //картинка
 const popupAddImage = document.querySelector('.popup_add-image'); //окно добавления картники
-const imgTitleInput = document.querySelector('#image-name'); //ввод подписи к картинке 
-const imgLinkInput = document.querySelector('#image-link'); //ввод ссылки на картинку
+const imgInputTitle = document.querySelector('#image-name'); //ввод подписи к картинке 
+const imgInputLink = document.querySelector('#image-link'); //ввод ссылки на картинку
 const elementsList = document.querySelector('.elements__list') //список картинок
 const elementTemplate = document.querySelector('#element-template').content;//шаблон для новых картинок
 //формы
 const profileForm = document.querySelector('form[name=profile-edit-form]'); //форма ред профиля
 const imageForm = document.querySelector('form[name=add-image-form]'); //форма добав картинки
 //открытая картинка
-const setPopupViewImg = document.querySelector('.popup_view-img'); //форма открытой картинки
-const viewImg = setPopupViewImg.querySelector('.popup__img'); //ссылка на картинкку
-const viewImgTitle = setPopupViewImg.querySelector('.popup__title-img'); //подпись картинки
+const popupImage = document.querySelector('.popup_view-img'); //форма открытой картинки
+const imageViewLink = popupImage.querySelector('.popup__img'); //ссылка на картинкку
+const imageViewTitle = popupImage.querySelector('.popup__title-img'); //подпись картинки
 //кнопки
-const editProfileBtn = document.querySelector('.profile__edit-btn'); //кнопка ред-ия профиля
-const closeBtn = document.querySelectorAll('.popup__close-btn'); //ВСЕ кнопки закрытия поп-апов
-const addImageBtn = document.querySelector('.profile__add-btn'); //кнопка добавить картинку
+const btnEditProfile = document.querySelector('.profile__edit-btn'); //кнопка ред-ия профиля
+const btnClosePopup = document.querySelectorAll('.popup__close-btn'); //ВСЕ кнопки закрытия поп-апов
+const btnAddImage = document.querySelector('.profile__add-btn'); //кнопка добавить картинку
 
 //массив 6 карточек "из коробки"
 const initialCards = [
@@ -60,6 +60,7 @@ function createCard(nameCard, linkCard) {
 
   newCardTitle.textContent = nameCard;
   newCardLink.setAttribute('src', linkCard);
+  newCardLink.setAttribute('alt', nameCard);
 
 //добавим обработчик кнопки лайк
   likeBtn.addEventListener('click', function(evt) {
@@ -72,9 +73,10 @@ function createCard(nameCard, linkCard) {
   });
 //добавим обработчик открытия картинки
 newCardLink.addEventListener('click', function() {
-    viewImg.setAttribute('src', newCardLink.src);
-    viewImgTitle.textContent = (newCardTitle.textContent);
-    openPopup(setPopupViewImg);
+    imageViewLink.setAttribute('src', newCardLink.src);
+    imageViewLink.setAttribute('alt', newCardLink.alt);
+    imageViewTitle.textContent = (newCardTitle.textContent);
+    openPopup(popupImage);
   });
   return newCard;
 }
@@ -96,7 +98,7 @@ function openPopup(showPopup) {
   showPopup.classList.add('popup_opened');
 }
 
-//ф-мя закрытия поп-апов
+//ф-ия закрытия поп-апов
 function closePopup() {
   const showedPopup = document.querySelector('.popup_opened');
   showedPopup.classList.remove('popup_opened');
@@ -113,12 +115,12 @@ function savePopup(evt) {
 //ф-ия добавления картинок из поп-апа
 function addCardsPopup(evt) {
   evt.preventDefault(); //Эта строчка отменяет стандартную отправку формы
-  addCards(createCard(imgTitleInput.value, imgLinkInput.value))
+  addCards(createCard(imgInputTitle.value, imgInputLink.value))
   closePopup()
 }
 
 //обработчик закрытия поп-апов
-closeBtn.forEach((button) => {
+btnClosePopup.forEach((button) => {
   button.addEventListener('click', function() {
     closePopup();
   })
@@ -129,15 +131,15 @@ profileForm.addEventListener('submit', savePopup);
 imageForm.addEventListener('submit', addCardsPopup);
 
 //обработчик редактирования профиля
-editProfileBtn.addEventListener('click', function() {
+btnEditProfile.addEventListener('click', function() {
   openPopup(popupEditProfile);
   nameInput.value = profileName.textContent;
   jobInput.value = profileAbout.textContent;
 })
 
 //обработчик добвления новой картинки
-addImageBtn.addEventListener('click', function() {
-  imgTitleInput.value = '';
-  imgLinkInput.value = '';
+btnAddImage.addEventListener('click', function() {
+  imgInputTitle.value = '';
+  imgInputLink.value = '';
   openPopup(popupAddImage);
 })
