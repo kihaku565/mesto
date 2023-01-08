@@ -91,13 +91,6 @@ initialCards.reverse().forEach((item) => {
   addCards(createCard(nameDefault, linkDefault));
 });
 
-//обработчик закрытия поп-апов
-closeBtn.forEach((button) => {
-  button.addEventListener('click', function() {
-    closePopup();
-  })
-});
-
 //ф-ия открытия поп-апов
 function openPopup(showPopup) {
   showPopup.classList.add('popup_opened');
@@ -123,6 +116,13 @@ function addCardsPopup(evt) {
   addCards(createCard(imgTitleInput.value, imgLinkInput.value))
   closePopup()
 }
+
+//обработчик закрытия поп-апов
+closeBtn.forEach((button) => {
+  button.addEventListener('click', function() {
+    closePopup();
+  })
+});
 
 //обработчик события submit
 profileForm.addEventListener('submit', savePopup);
