@@ -24,55 +24,13 @@
         </section>
         <section class="elements">
             <ul class="elements__list">
-                <li class="element">
-                    <img class="element__pic" src="./images/element-(2).jpg" alt="Карачаевск, руины">
-                    <div class="element__caption">
-                        <h2 class="element__title">Карачаевск</h2>
-                        <button class="element__like-btn" type="button"></button>
-                    </div>
-                </li>
-                <li class="element">
-                    <img class="element__pic" src="./images/element-(4).jpg" alt="Гора Эльбрус, горизонт">
-                    <div class="element__caption">
-                        <h2 class="element__title">Гора Эльбрус</h2>
-                        <button class="element__like-btn" type="button"></button>
-                    </div>
-                </li>
-                <li class="element">
-                    <img class="element__pic" src="./images/element-(1).jpg" alt="Домбай, горы">
-                    <div class="element__caption">
-                        <h2 class="element__title">Домбай</h2>
-                        <button class="element__like-btn" type="button"></button>
-                    </div>
-                </li>
-                <li class="element">
-                    <img class="element__pic" src="./images/element-(5).jpg" alt="Гора Эльбрус, горизонт">
-                    <div class="element__caption">
-                        <h2 class="element__title">Гора Эльбрус</h2>
-                        <button class="element__like-btn" type="button"></button>
-                    </div>
-                </li>
-                <li class="element">
-                    <img class="element__pic" src="./images/element-(6).jpg" alt="Домбай, горы">
-                    <div class="element__caption">
-                        <h2 class="element__title">Домбай</h2>
-                        <button class="element__like-btn" type="button"></button>
-                    </div>
-                </li>
-                <li class="element">
-                    <img class="element__pic" src="./images/element-(3).jpg" alt="Карачаево-Черкесия, руины">
-                    <div class="element__caption">
-                        <h2 class="element__title">Карачаево-Черкесия...</h2>
-                        <button class="element__like-btn" type="button"></button>
-                    </div>
-                </li>
             </ul>
         </section>
     </main>
     <footer class="footer">
         <p class="footer__copyright">&copy;2022 Mesto Russia</p>
     </footer>
-    <div class="popup">
+    <div class="popup popup_edit-profile">
         <form class="popup__container" name="profile-edit-form">
             <fieldset class="popup__fieldset">
                 <h2 class="popup__title">Редактировать профиль</h2>
@@ -87,6 +45,39 @@
             <button class="popup__close-btn" type="button"></button>
         </form>
     </div>
+    <div class="popup popup_add-image">
+        <form class="popup__container" name="add-image-form">
+            <fieldset class="popup__fieldset">
+                <h2 class="popup__title">Новое место</h2>
+                <label class="popup__label">
+                    <input class="popup__input-text" type="text" id="image-name" placeholder="Название">
+                </label>
+                <label class="popup__label">
+                    <input class="popup__input-text" type="text" id="image-link" placeholder="Ссылка на картинку">
+                </label>
+                <button class="popup__save-btn" type="submit">Создать</button>
+            </fieldset>
+            <button class="popup__close-btn" type="button"></button>
+        </form>
+    </div>
+    <div class="popup popup_view-img">
+        <div class="popup__container-img">
+            <img class="popup__img">
+            <button class="popup__close-btn" type="button"></button>
+            <h2 class="popup__title-img"></h2>
+        </div>
+    </div>
+    <!--шаблон для картинки-->
+    <template id="element-template">
+        <li class="element">
+            <img class="element__pic" src="" alt="">
+            <button class="element__delete"></button>
+            <div class="element__caption">
+                <h2 class="element__title"></h2>
+                <button class="element__like-btn" type="button"></button>
+            </div>
+        </li>
+    </template>
     <script src="./scripts/index.js"></script>
 </body>
 
