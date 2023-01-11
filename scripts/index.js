@@ -36,15 +36,29 @@ function createCard(nameCard, linkCard) {
 
   deleteCard(newCard)
 
-//добавим обработчик открытия картинки
-newCardLink.addEventListener('click', function() { //совсем не понимаю как это сделать -__-
-  imageViewLink.setAttribute('src', newCardLink.src);
-  imageViewLink.setAttribute('alt', newCardLink.alt);
-  imageViewTitle.textContent = (newCardTitle.textContent);
-  openPopup(popupImage);
-});        
+  newCardLink.addEventListener('click', () => openImage(newCardTitle, newCardLink))
 
   return newCard;
+}
+
+//ф-ия добавления картинки
+function addCards(card) {
+  elementsList.prepend(card);
+}
+
+//добавим дефолтные картинки
+initialCards.reverse().forEach((item) => {
+  const nameDefault = item.name;
+  const linkDefault = item.link;
+  addCards(createCard(nameDefault, linkDefault));
+})
+
+//ф-ия открытия картинки
+function openImage(name, link) {
+  imageViewLink.setAttribute('src', link.src);
+  imageViewLink.setAttribute('alt', link.alt);
+  imageViewTitle.textContent = (name.textContent);
+  openPopup(popupImage)
 }
 
 //ф-ия лайка
@@ -65,18 +79,6 @@ function deleteCard(pressBtn) {
   deleteBtn.addEventListener('click', cardDelete)
 }
 
-//ф-ия добавления картинки
-function addCards(card) {
-  elementsList.prepend(card);
-}
-
-//добавим дефолтные картинки
-initialCards.reverse().forEach((item) => {
-  const nameDefault = item.name;
-  const linkDefault = item.link;
-  addCards(createCard(nameDefault, linkDefault));
-})
-
 //ф-ия открытия поп-апов
 function openPopup(element) {
   element.classList.add('popup_opened');
@@ -92,23 +94,21 @@ function savePopup(evt) {
   evt.preventDefault(); //строчка отменяет стандартную отправку формы
   profileName.textContent = nameInput.value;
   profileAbout.textContent = jobInput.value;
-  const popup = document.querySelector('.popup_opened'); //тут ничего лучше придумать не получилось чем это
-  closePopup(popup);
+  closePopup(popupEditProfile);
 }
 
 //ф-ия добавления картинок из поп-апа
 function addCardsPopup(evt) {
   evt.preventDefault(); //строчка отменяет стандартную отправку формы
   addCards(createCard(imgInputTitle.value, imgInputLink.value))
-  const popup = document.querySelector('.popup_opened'); //тут ничего лучше придумать не получилось чем это
-  closePopup(popup)
+  closePopup(popupAddImage)
 }
 
 //обработчик закрытия поп-апов
 btnClosePopup.forEach((button) => {
-  button.addEventListener('click', function() {
-    const popup = document.querySelector('.popup_opened'); //тут ничего лучше придумать не получилось чем это
-    closePopup(popup);
+  button.addEventListener('click', () => {
+    const currentPopup = button.closest('.popup');
+    closePopup(currentPopup);
   })
 })
 
