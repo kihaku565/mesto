@@ -22,62 +22,22 @@ const btnEditProfile = document.querySelector('.profile__edit-btn'); //кноп�
 const btnClosePopup = document.querySelectorAll('.popup__close-btn'); //ВСЕ кнопки закрытия поп-апов
 const btnAddImage = document.querySelector('.profile__add-btn'); //кнопка добавить картинку
 
-//массив 6 карточек "из коробки"
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
 //ф-ия создания новой картинки
 function createCard(nameCard, linkCard) {
   const newCard = elementTemplate.querySelector('.element').cloneNode(true);
   const newCardTitle = newCard.querySelector('.element__title');
   const newCardLink = newCard.querySelector('.element__pic');
-  const likeBtn = newCard.querySelector('.element__like-btn');
-  const deleteBtn = newCard.querySelector('.element__delete');
 
   newCardTitle.textContent = nameCard;
   newCardLink.setAttribute('src', linkCard);
   newCardLink.setAttribute('alt', nameCard);
 
-//добавим обработчик кнопки лайк
-  likeBtn.addEventListener('click', function(evt) {
-    evt.target.classList.toggle('element__like-btn_active');
-  });
-//добавим обработчик кнопки удалить
-  deleteBtn.addEventListener('click', function() {
-    const cardDelete = deleteBtn.closest('.element');
-    cardDelete.remove();
-  });
-//добавим обработчик открытия картинки
-newCardLink.addEventListener('click', function() {
-    imageViewLink.setAttribute('src', newCardLink.src);
-    imageViewLink.setAttribute('alt', newCardLink.alt);
-    imageViewTitle.textContent = (newCardTitle.textContent);
-    openPopup(popupImage);
-  });
+  addLike(newCard)
+
+  deleteCard(newCard)
+
+  newCardLink.addEventListener('click', () => openImage(newCardTitle, newCardLink))
+
   return newCard;
 }
 
@@ -91,40 +51,66 @@ initialCards.reverse().forEach((item) => {
   const nameDefault = item.name;
   const linkDefault = item.link;
   addCards(createCard(nameDefault, linkDefault));
-});
+})
+
+//ф-ия открытия картинки
+function openImage(name, link) {
+  imageViewLink.setAttribute('src', link.src);
+  imageViewLink.setAttribute('alt', link.alt);
+  imageViewTitle.textContent = (name.textContent);
+  openPopup(popupImage)
+}
+
+//ф-ия лайка
+function addLike(pressBtn) {
+  const likeBtn = pressBtn.querySelector('.element__like-btn');
+  const likeCard = () => {
+    likeBtn.classList.toggle('element__like-btn_active');
+  };
+  likeBtn.addEventListener('click', likeCard);
+}
+
+//ф-ия удаления
+function deleteCard(pressBtn) {
+  const deleteBtn = pressBtn.querySelector('.element__delete');
+  const cardDelete = () => {
+    deleteBtn.closest('.element').remove();
+  };
+  deleteBtn.addEventListener('click', cardDelete)
+}
 
 //ф-ия открытия поп-апов
-function openPopup(showPopup) {
-  showPopup.classList.add('popup_opened');
+function openPopup(element) {
+  element.classList.add('popup_opened');
 }
 
 //ф-ия закрытия поп-апов
-function closePopup() {
-  const showedPopup = document.querySelector('.popup_opened');
-  showedPopup.classList.remove('popup_opened');
+function closePopup(element) {
+  element.classList.remove('popup_opened');
 }
 
 //ф-ия сохранения введенных данных профиля
 function savePopup(evt) {
-  evt.preventDefault(); //Эта строчка отменяет стандартную отправку формы
+  evt.preventDefault(); //строчка отменяет стандартную отправку формы
   profileName.textContent = nameInput.value;
   profileAbout.textContent = jobInput.value;
-  closePopup();
+  closePopup(popupEditProfile);
 }
 
 //ф-ия добавления картинок из поп-апа
 function addCardsPopup(evt) {
-  evt.preventDefault(); //Эта строчка отменяет стандартную отправку формы
+  evt.preventDefault(); //строчка отменяет стандартную отправку формы
   addCards(createCard(imgInputTitle.value, imgInputLink.value))
-  closePopup()
+  closePopup(popupAddImage)
 }
 
 //обработчик закрытия поп-апов
 btnClosePopup.forEach((button) => {
-  button.addEventListener('click', function() {
-    closePopup();
+  button.addEventListener('click', () => {
+    const currentPopup = button.closest('.popup');
+    closePopup(currentPopup);
   })
-});
+})
 
 //обработчик события submit
 profileForm.addEventListener('submit', savePopup);

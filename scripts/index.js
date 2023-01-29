@@ -1,3 +1,4 @@
+const setPopup = Array.from(document.querySelectorAll('.popup'));
 //профиль
 const profileName = document.querySelector('.profile__name'); //дефолт строка с именем профиля
 const profileAbout = document.querySelector('.profile__about'); //дефолт строка с "увлечениями"
@@ -82,11 +83,13 @@ function deleteCard(pressBtn) {
 //ф-ия открытия поп-апов
 function openPopup(element) {
   element.classList.add('popup_opened');
+  document.addEventListener('keydown', closePopupPressEscape);
 }
 
 //ф-ия закрытия поп-апов
 function closePopup(element) {
   element.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closePopupPressEscape);
 }
 
 //ф-ия сохранения введенных данных профиля
@@ -129,3 +132,22 @@ btnAddImage.addEventListener('click', function() {
   imgInputLink.value = '';
   openPopup(popupAddImage);
 })
+
+const closePopupClickOverlay = () => {  
+  setPopup.forEach((popup) => {
+    popup.addEventListener('click', event => {
+      if (event.target === event.currentTarget) {
+        closePopup(popup);
+       }
+    })
+  })
+} 
+
+closePopupClickOverlay()
+
+function closePopupPressEscape(event) {
+  if (event.key === 'Escape') {
+    const popupActive = document.querySelector('.popup_opened');
+    closePopup(popupActive);
+  }
+}

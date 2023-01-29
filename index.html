@@ -31,14 +31,30 @@
         <p class="footer__copyright">&copy;2022 Mesto Russia</p>
     </footer>
     <div class="popup popup_edit-profile">
-        <form class="popup__container" name="profile-edit-form">
+        <form class="popup__container" name="profile-edit-form" novalidate>
             <fieldset class="popup__fieldset">
                 <h2 class="popup__title">Редактировать профиль</h2>
                 <label class="popup__label">
-                    <input class="popup__input-text" type="text" id="profile-name" value="Жак-Ив Кусто">
+                    <input 
+                    class="popup__input-text"
+                    type="text"
+                    id="profile-name"
+                    value="Жак-Ив Кусто"
+                    minlength="2"
+                    maxlength="40"
+                    required>
+                    <span class="profile-name-input-error popup__input-error"></span>
                 </label>
                 <label class="popup__label">
-                    <input class="popup__input-text" type="text" id="profile-about" value="Исследователь океана">
+                    <input 
+                    class="popup__input-text"
+                    type="text"
+                    id="profile-about"
+                    value="Исследователь океана"
+                    minlength="2"
+                    maxlength="40"
+                    required>
+                    <span class="profile-about-input-error popup__input-error"></span>
                 </label>
                 <button class="popup__save-btn" type="submit">Сохранить</button>
             </fieldset>
@@ -46,14 +62,28 @@
         </form>
     </div>
     <div class="popup popup_add-image">
-        <form class="popup__container" name="add-image-form">
+        <form class="popup__container" name="add-image-form" novalidate>
             <fieldset class="popup__fieldset">
                 <h2 class="popup__title">Новое место</h2>
                 <label class="popup__label">
-                    <input class="popup__input-text" type="text" id="image-name" placeholder="Название">
+                    <input 
+                    class="popup__input-text"
+                    type="text"
+                    id="image-name"
+                    placeholder="Название"
+                    minlength="2"
+                    maxlength="30"
+                    required>
+                    <span class="image-name-input-error popup__input-error"></span>
                 </label>
                 <label class="popup__label">
-                    <input class="popup__input-text" type="text" id="image-link" placeholder="Ссылка на картинку">
+                    <input 
+                    class="popup__input-text"
+                    type="url"
+                    id="image-link"
+                    placeholder="Ссылка на картинку"
+                    required>
+                    <span class="image-link-input-error popup__input-error"></span>
                 </label>
                 <button class="popup__save-btn" type="submit">Создать</button>
             </fieldset>
@@ -67,7 +97,6 @@
             <h2 class="popup__title-img"></h2>
         </div>
     </div>
-    <!--шаблон для картинки-->
     <template id="element-template">
         <li class="element">
             <img class="element__pic" src="#" alt="">
@@ -80,6 +109,7 @@
     </template>
     <script src="./scripts/initialCards.js"></script>
     <script src="./scripts/index.js"></script>
+    <script src="./scripts/validate.js"></script>
 </body>
 
 </html>
