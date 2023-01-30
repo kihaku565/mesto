@@ -1,59 +1,75 @@
-function enableValidation() {
-  const formList = Array.from(document.querySelectorAll('.popup__container'));
-  formList.forEach((formElement) => {
-    setEventListeners(formElement);
-  });
-};
-
-enableValidation(); 
-
-function checkInputValidity(formElement, inputElement) {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
-  } else {
-    hideInputError(formElement, inputElement);
-  }
+//объект валидации
+const formValues = {
+  formSelector: '.popup__container',
+  inputSelector: '.popup__input-text',
+  submitButtonSelector: '.popup__save-btn',
+  inactiveButtonClass: 'popup__save-btn_disabled',
+  inputErrorClass: 'popup__input-text_error',
+  errorClass: 'popup__input-error_visible'
 }
 
-function hasInvalidInput(inputList) {
-  return inputList.some((inputElement) => {
-    return !inputElement.validity.valid;
+//ф-ия перебора всех форм на странице
+function enableValidation(element) {
+  const formLists = Array.from(document.querySelectorAll(element.formSelector));
+  formLists.forEach((formElement) => {
+    setEventListeners(formElement, element);
   })
 }
 
-function toggleButtonState(inputList, buttonElement) {
+enableValidation(formValues);
+
+//ф-ия проверки на корректность введенных данных
+function checkInputValidity(formElement, inputElement, element) {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage, element);
+  } else {
+    hideInputError(formElement, inputElement, element);
+  }
+}
+
+//ф-ия проверки наличия невалидного поля
+function hasInvalidInput(inputList) {
+  return inputList.some((inputElement) =>
+    !inputElement.validity.valid);
+}
+
+//ф-ия переключения кнопки
+function toggleButtonState(inputList, buttonElement, element) {
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add('popup__save-btn_disabled');
+    buttonElement.classList.add(element.inactiveButtonClass);
     buttonElement.disabled = true;
   } else {
-    buttonElement.classList.remove('popup__save-btn_disabled');
+    buttonElement.classList.remove(element.inactiveButtonClass);
     buttonElement.disabled = false;
   }
 }
 
-function setEventListeners(formElement) {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input-text'));
-  const buttonElement = formElement.querySelector('.popup__save-btn');
-  toggleButtonState(inputList, buttonElement);
+//ф-ия добавления обработчиков всем полям формы
+function setEventListeners(formElement, element) {
+  const inputLists = Array.from(formElement.querySelectorAll(element.inputSelector));
+  const buttonElement = formElement.querySelector(element.submitButtonSelector);
+  toggleButtonState(inputLists, buttonElement, element);
 
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', function() {
-      checkInputValidity(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
-    });
-  });
+  inputLists.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      checkInputValidity(formElement, inputElement, element);
+      toggleButtonState(inputLists, buttonElement, element);
+    })
+  })
 }
 
-function showInputError(formElement, inputElement, errorMessage) {
+// ф-ия добавления класса с ошибкой
+function showInputError(formElement, inputElement, errorMessage, element) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-input-error`);
-  inputElement.classList.add('popup__input-text_error');
+  inputElement.classList.add(element.inputErrorClass);
   errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-error_visible');
+  errorElement.classList.add(element.errorClass);
 }
 
-function hideInputError(formElement, inputElement) {
+// ф-ия удаления класса с ошибкой
+function hideInputError(formElement, inputElement, element) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-input-error`);
-  inputElement.classList.remove('popup__input-text_error');
-  errorElement.classList.remove('popup__input-error_visible');
+  inputElement.classList.remove(element.inputErrorClass);
+  errorElement.classList.remove(element.errorClass);
   errorElement.textContent = '';
 }
