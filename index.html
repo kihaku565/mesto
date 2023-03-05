@@ -31,7 +31,7 @@
         <p class="footer__copyright">&copy;2022 Mesto Russia</p>
     </footer>
     <div class="popup popup_edit-profile">
-        <form class="popup__container" name="profile-edit-form" novalidate>
+        <form class="popup__form popup__form_edit" name="profile-edit-form" novalidate>
             <fieldset class="popup__fieldset">
                 <h2 class="popup__title">Редактировать профиль</h2>
                 <label class="popup__label">
@@ -62,7 +62,7 @@
         </form>
     </div>
     <div class="popup popup_add-image">
-        <form class="popup__container" name="add-image-form" novalidate>
+        <form class="popup__form popup__form_add" name="add-image-form" novalidate>
             <fieldset class="popup__fieldset">
                 <h2 class="popup__title">Новое место</h2>
                 <label class="popup__label">
@@ -107,9 +107,8 @@
             </div>
         </li>
     </template>
-    <script src="./scripts/initialCards.js"></script>
-    <script src="./scripts/index.js"></script>
-    <script src="./scripts/validate.js"></script>
+    <script type="module" src="./scripts/constants.js"></script>
+    <script type="module" src="./scripts/index.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,4 @@
+const setPopups = Array.from(document.querySelectorAll('.popup'));
 //профиль
 const profileName = document.querySelector('.profile__name'); //дефолт строка с именем профиля
 const profileAbout = document.querySelector('.profile__about'); //дефолт строка с "увлечениями"
@@ -10,6 +11,8 @@ const imgInputTitle = document.querySelector('#image-name'); //ввод подп
 const imgInputLink = document.querySelector('#image-link'); //ввод ссылки на картинку
 const elementsList = document.querySelector('.elements__list') //список картинок
 const elementTemplate = document.querySelector('#element-template').content;//шаблон для новых картинок
+const imgFormInputs = Array.from(popupAddImage.querySelectorAll('.popup__input-text'));
+const imgFormSubmitBtn = popupAddImage.querySelector('.popup__save-btn');
 //формы
 const profileForm = document.querySelector('form[name=profile-edit-form]'); //форма ред профиля
 const imageForm = document.querySelector('form[name=add-image-form]'); //форма добав картинки
@@ -19,7 +22,7 @@ const imageViewLink = popupImage.querySelector('.popup__img'); //ссылка н
 const imageViewTitle = popupImage.querySelector('.popup__title-img'); //подпись картинки
 //кнопки
 const btnEditProfile = document.querySelector('.profile__edit-btn'); //кнопка ред-ия профиля
-const btnClosePopup = document.querySelectorAll('.popup__close-btn'); //ВСЕ кнопки закрытия поп-апов
+const btnClosePopups = document.querySelectorAll('.popup__close-btn'); //ВСЕ кнопки закрытия поп-апов
 const btnAddImage = document.querySelector('.profile__add-btn'); //кнопка добавить картинку
 
 //ф-ия создания новой картинки
@@ -82,16 +85,18 @@ function deleteCard(pressBtn) {
 //ф-ия открытия поп-апов
 function openPopup(element) {
   element.classList.add('popup_opened');
+  document.addEventListener('keydown', closePopupPressEscape);
 }
 
 //ф-ия закрытия поп-апов
 function closePopup(element) {
   element.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closePopupPressEscape);
 }
 
 //ф-ия сохранения введенных данных профиля
 function savePopup(evt) {
-  evt.preventDefault(); //строчка отменяет стандартную отправку формы
+  evt.preventDefault();
   profileName.textContent = nameInput.value;
   profileAbout.textContent = jobInput.value;
   closePopup(popupEditProfile);
@@ -99,13 +104,15 @@ function savePopup(evt) {
 
 //ф-ия добавления картинок из поп-апа
 function addCardsPopup(evt) {
-  evt.preventDefault(); //строчка отменяет стандартную отправку формы
+  evt.preventDefault();
   addCards(createCard(imgInputTitle.value, imgInputLink.value))
+  imageForm.reset();
+  toggleButtonState(imgFormInputs, imgFormSubmitBtn, formValues);
   closePopup(popupAddImage)
 }
 
 //обработчик закрытия поп-апов
-btnClosePopup.forEach((button) => {
+btnClosePopups.forEach((button) => {
   button.addEventListener('click', () => {
     const currentPopup = button.closest('.popup');
     closePopup(currentPopup);
@@ -129,3 +136,24 @@ btnAddImage.addEventListener('click', function() {
   imgInputLink.value = '';
   openPopup(popupAddImage);
 })
+
+//закрытие поп-апа нажатием на оверлей
+function closePopupClickOverlay() {  
+  setPopups.forEach((popup) => {
+    popup.addEventListener('click', evt => {
+      if (evt.target === evt.currentTarget) {
+        closePopup(popup);
+       }
+    })
+  })
+} 
+
+closePopupClickOverlay()
+
+//Ф-ия закрытия поп-апа клавишей Esc
+function closePopupPressEscape(evt) {
+  if (evt.key === 'Escape') {
+    const popupActive = document.querySelector('.popup_opened');
+    closePopup(popupActive);
+  }
+}
