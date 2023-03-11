@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesto</title>
-    <link rel="stylesheet" href="./pages/index.css">
+    <!-- <link rel="stylesheet" href="./pages/index.css"> -->
 </head>
 
 <body class="page">
     <header class="header">
-        <img class="header__logo" src="./images/header-logo.svg" alt="логотип Mesto">
+        <img class="header__logo" src="<%=require('./images/header-logo.svg')%>" alt="логотип Mesto">
     </header>
     <main class="main">
         <section class="profile">
-            <img class="profile__avatar" src="./images/profile-avatar.jpg" alt="фото профиля">
+            <img class="profile__avatar" src="<%=require('./images/profile-avatar.jpg')%>" alt="фото профиля">
             <div class="profile__info">
                 <h1 class="profile__name">Жак-Ив Кусто</h1>
                 <button class="profile__edit-btn" type="button"></button>
@@ -37,6 +37,7 @@
                 <label class="popup__label">
                     <input 
                     class="popup__input-text"
+                    name="name"
                     type="text"
                     id="profile-name"
                     value="Жак-Ив Кусто"
@@ -48,6 +49,7 @@
                 <label class="popup__label">
                     <input 
                     class="popup__input-text"
+                    name="info"
                     type="text"
                     id="profile-about"
                     value="Исследователь океана"
@@ -56,7 +58,7 @@
                     required>
                     <span class="profile-about-input-error popup__input-error"></span>
                 </label>
-                <button class="popup__save-btn" type="submit">Сохранить</button>
+                <button class="popup__save-btn popup__save-btn_profile" type="submit">Сохранить</button>
             </fieldset>
             <button class="popup__close-btn" type="button"></button>
         </form>
@@ -68,6 +70,7 @@
                 <label class="popup__label">
                     <input 
                     class="popup__input-text"
+                    name="name" 
                     type="text"
                     id="image-name"
                     placeholder="Название"
@@ -79,13 +82,14 @@
                 <label class="popup__label">
                     <input 
                     class="popup__input-text"
+                    name="link"
                     type="url"
                     id="image-link"
                     placeholder="Ссылка на картинку"
                     required>
                     <span class="image-link-input-error popup__input-error"></span>
                 </label>
-                <button class="popup__save-btn" type="submit">Создать</button>
+                <button class="popup__save-btn popup__save-btn_add" type="submit">Создать</button>
             </fieldset>
             <button class="popup__close-btn" type="button"></button>
         </form>
@@ -107,8 +111,7 @@
             </div>
         </li>
     </template>
-    <script type="module" src="./scripts/constants.js"></script>
-    <script type="module" src="./scripts/index.js"></script>
+    <!-- <script type="module" src="./pages/index.js"></script> -->
 </body>
 
 </html>

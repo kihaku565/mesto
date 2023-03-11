@@ -1,5 +1,3 @@
-export {FormValidator};
-
 class FormValidator {
     constructor(config, formElement) {
         this._formElement = document.querySelector(formElement);
@@ -32,12 +30,16 @@ class FormValidator {
 
     toggleButtonState() { // переключения кнопки
         if (this._hasInvalidInput()) {
-            this._buttonElement.classList.add(this._config.inactiveButtonClass);
-            this._buttonElement.setAttribute('disabled', '');
+            this.disableSubmitButton(this._buttonElement);
         } else {
             this._buttonElement.classList.remove(this._config.inactiveButtonClass);
             this._buttonElement.removeAttribute('disabled');
         }
+    }
+
+    disableSubmitButton = (button) => {
+        button.classList.add(this._config.inactiveButtonClass);
+        button.disabled = true;
     }
 
     _hasInvalidInput() { // проверка наличия невалидного поля
@@ -57,6 +59,18 @@ class FormValidator {
     }
 
     enableValidation() { // перебор всех форм на странице
+        this._formElement.addEventListener('submit', function (evt) {
+            evt.preventDefault();
+        });
         this._setEventListener();
     }
+
+    resetValidation() {
+        this.toggleButtonState();
+        this._inputList.forEach((inputElement) => {
+            this._hideInputError(inputElement);
+        });
+    }
 }
+
+export { FormValidator };
