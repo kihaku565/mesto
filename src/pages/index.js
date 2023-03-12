@@ -1,21 +1,22 @@
 import './index.css';
-import { Card } from '../components/Card.js';
+import { Card } from '../components/Card';
 import { FormValidator } from '../components/FormValidator.js';
 import {
   initialCards,
   config,
   btnEditProfile,
   btnAddImage,
-  btnSubmitAdd
+  formElementEditProfile,
+  formElementAddCard
 } from '../components/constants.js';
 import { Section } from '../components/Section.js'
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js'
 
-const validatorProfile = new FormValidator(config, '.popup__form_edit');
+const validatorProfile = new FormValidator(config, formElementEditProfile);
 
-const validatorAddPicture = new FormValidator(config, '.popup__form_add');
+const validatorAddPicture = new FormValidator(config, formElementAddCard);
 
 const userInfo = new UserInfo({
   userName: '.profile__name',
@@ -43,8 +44,8 @@ function handleCardClick(name, link) {
 const popupEditForm = new PopupWithForm('.popup_edit-profile', {
   handleSubmitForm: (inputs) => {
     userInfo.setUserInfo({
-      name: inputs[0].name,
-      info: inputs[0].info
+      name: inputs.name,
+      info: inputs.info
     });
     popupEditForm.close();
   }
@@ -52,9 +53,9 @@ const popupEditForm = new PopupWithForm('.popup_edit-profile', {
 
 const popupAddForm = new PopupWithForm('.popup_add-image', {
   handleSubmitForm: (inputs) => {
-    defaultCardList.addItem(createCard(inputs[0]));
-    validatorAddPicture.disableSubmitButton(btnSubmitAdd);
-    popupAddForm.close('.popup_add-image');
+    defaultCardList.addItem(createCard(inputs));
+    validatorAddPicture.resetValidation();
+    popupAddForm.close();
   }
 })
 

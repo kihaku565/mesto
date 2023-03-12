@@ -1,3 +1,19 @@
+export const formElementEditProfile = document.querySelector('.popup__form_edit');
+export const formElementAddCard = document.querySelector('.popup__form_add');
+
+//кнопки
+export const btnEditProfile = document.querySelector('.profile__edit-btn'); // ред-ть профиль
+export const btnAddImage = document.querySelector('.profile__add-btn'); // добавить картинку
+
+export const config = {
+  formSelector: '.popup__container',
+  inputSelector: '.popup__input-text',
+  submitButtonSelector: '.popup__save-btn',
+  inactiveButtonClass: 'popup__save-btn_disabled',
+  inputErrorClass: 'popup__input-text_error',
+  errorClass: 'popup__input-error_visible'
+}
+
 export const initialCards = [
   {
     name: 'Архыз',
@@ -24,17 +40,3 @@ export const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
-
-export const config = {
-  formSelector: '.popup__container',
-  inputSelector: '.popup__input-text',
-  submitButtonSelector: '.popup__save-btn',
-  inactiveButtonClass: 'popup__save-btn_disabled',
-  inputErrorClass: 'popup__input-text_error',
-  errorClass: 'popup__input-error_visible'
-}
-
-//кнопки
-export const btnEditProfile = document.querySelector('.profile__edit-btn'); // ред-ть профиль
-export const btnAddImage = document.querySelector('.profile__add-btn'); // добавить картинку
-export const btnSubmitAdd = document.querySelector('.popup__save-btn_add');
