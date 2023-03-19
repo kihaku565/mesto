@@ -1,16 +1,14 @@
 .profile__info {
-    max-width: calc((244px + 336px) - 30px);
-    display: grid;
-    align-items: baseline;
-    grid-template-columns: 1fr 24px;
-    gap: 16px 18px;
-    padding-left: 30px;
+  display: grid;
+  gap: 5px 18px;
+  grid-template-columns: 1fr 24px;
+  align-items: center;
+  align-content: center;
 }
 
-/* Сумма элементов по ширине блока profile */
-@media screen and (max-width: calc(120px + 30px + 294px + 18px + 24px + 30px + 150px)) {
-    .profile__info {
-        justify-items: center;
-        gap: 8px 10px;
-    }
+@media screen and (max-width: 700px) {
+  .profile__info {
+  gap: 5px 10px;
+  margin:26px 0 0 33px;
+ }
 }

@@ -1,81 +1,134 @@
 import './index.css';
-import { Card } from '../components/Card';
-import { FormValidator } from '../components/FormValidator.js';
+import Card from '../components/Card.js';
+import {FormValidator} from "../components/FormValidator.js";
 import {
-  initialCards,
-  config,
-  btnEditProfile,
-  btnAddImage,
-  formElementEditProfile,
-  formElementAddCard
-} from '../components/constants.js';
-import { Section } from '../components/Section.js'
-import { PopupWithImage } from '../components/PopupWithImage.js';
-import { PopupWithForm } from '../components/PopupWithForm.js';
-import { UserInfo } from '../components/UserInfo.js'
+  settingValidation, settingUserApi, buttonEdit, buttonAdd, buttonEditAvatar, userPath, cardsPath, formValidators
+} from "../utils/utils.js";
+import Section from "../components/Section.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import UserInfo from "../components/UserInfo.js";
+import Api from "../components/Api.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation";
 
-const validatorProfile = new FormValidator(config, formElementEditProfile);
+const api = new Api(settingUserApi);
 
-const validatorAddPicture = new FormValidator(config, formElementAddCard);
-
-const userInfo = new UserInfo({
-  userName: '.profile__name',
-  userInfo: '.profile__about'
+const userInformation = new UserInfo({
+  userName: ".profile__title", userAbout: ".profile__subtitle", avatar: ".profile__avatar-image"
 });
 
-const popupImage = new PopupWithImage('.popup_view-img');
-
 const defaultCardList = new Section({
-  items: initialCards,
-  renderer: (item) => {
+  renderer: (item, userID) => {
+    item.userId = userID;
     defaultCardList.addItem(createCard(item));
   }
-}, '.elements__list')
+}, ".photo-grid");
+
+
+Promise.all([api.getServerInfo(userPath), api.getServerInfo(cardsPath)])
+  .then(([userData, cards]) => {
+    userInformation.setUserInfo({name: userData.name, about: userData.about})
+    userInformation.setAvatar({avatar: userData.avatar});
+    defaultCardList.renderItems(cards, userData._id);
+  }).catch((err) => console.log(err))
+
+const popupImage = new PopupWithImage("#popupShowImg");
+
+const popupWithConfirm = new PopupWithConfirmation("#popupDelete", {
+  handleCardDelete: (id, element) => api.deleteServerCard(id, cardsPath).then(() => {
+    element.remove();
+  }).catch((err) => console.log(err))
+});
+
+const popupWithEditForm = new PopupWithForm("#popupEditProfile", {
+  handleSubmitForm: (inputs) => api.editServerProfileInfo({
+    name: inputs.name, about: inputs.about
+  }, userPath).then(() => userInformation.setUserInfo({
+    name: inputs.name, about: inputs.about
+  })).catch((err) => console.log(err))
+});
+
+const popupWithEditAvatarForm = new PopupWithForm("#popupEditAvatar", {
+  handleSubmitForm: (inputs) => api.setServerAvatar({avatar: inputs.link}, userPath).then(() => {
+    userInformation.setAvatar({avatar: inputs.link})
+  }).catch((err) => console.log(err))
+});
+
+const popupWithAddForm = new PopupWithForm("#popupAddCard", {
+  handleSubmitForm: (inputs) => api.addServerCard(inputs, cardsPath).then((data) => {
+    data.userId = data.owner._id;
+    defaultCardList.addItem(createCard(data), true);
+  }).catch((err) => console.log(err))
+})
+
+popupWithConfirm.setEventListeners();
+popupImage.setEventListeners();
+popupWithEditForm.setEventListeners();
+popupWithAddForm.setEventListeners();
+popupWithEditAvatarForm.setEventListeners();
+
+function handleLikeClick(card) {
+  if (!card.isLiked) {
+    api.setServerLike(card._idCard)
+      .then((res) => {
+        card.setLike(res)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    api.removeServerLike(card._idCard)
+      .then((res) => {
+        card.removeLike(res)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+}
 
 function createCard(item) {
-  const card = new Card(item, '#element-template', handleCardClick);
-  return card.generateCard()
+  const newCard = new Card(item, '#photoGrid', handleCardClick, handleDeleteButtonClick, handleLikeClick);
+  return newCard.generateCard();
 }
 
-function handleCardClick(name, link) {
-  popupImage.open(name, link);
+function handleCardClick(link, name) {
+  popupImage.open(link, name);
 }
 
-const popupEditForm = new PopupWithForm('.popup_edit-profile', {
-  handleSubmitForm: (inputs) => {
-    userInfo.setUserInfo({
-      name: inputs.name,
-      info: inputs.info
-    });
-    popupEditForm.close();
-  }
-})
-
-const popupAddForm = new PopupWithForm('.popup_add-image', {
-  handleSubmitForm: (inputs) => {
-    defaultCardList.addItem(createCard(inputs));
-    validatorAddPicture.resetValidation();
-    popupAddForm.close();
-  }
-})
+function handleDeleteButtonClick(id, element) {
+  popupWithConfirm.open(id, element);
+}
 
 const openProfilePopup = () => {
-  popupEditForm.setInputValues(userInfo.getUserInfo());
-  validatorProfile.resetValidation();
-  popupEditForm.open();
+  popupWithEditForm.setInputValues(userInformation.getUserInfo());
+  formValidators['editProfileForm'].resetValidation();
+  popupWithEditForm.open();
 }
 
 const openAddPopup = () => {
-  validatorAddPicture.resetValidation();
-  popupAddForm.open();
+  formValidators['editAddForm'].resetValidation();
+  popupWithAddForm.open();
 }
 
-btnEditProfile.addEventListener('click', () => openProfilePopup());
-btnAddImage.addEventListener('click', () => openAddPopup());
+const openEditAvatarPopup = () => {
+  formValidators['editAvatarForm'].resetValidation();
+  popupWithEditAvatarForm.open();
+}
 
-popupImage.setEventListeners();
-popupEditForm.setEventListeners();
-popupAddForm.setEventListeners();
-defaultCardList.renderItems();
-validatorProfile.enableValidation();
-validatorAddPicture.enableValidation();
+buttonEdit.addEventListener("click", openProfilePopup);
+buttonAdd.addEventListener("click", openAddPopup);
+buttonEditAvatar.addEventListener("click", openEditAvatarPopup);
+
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement)
+    const formName = formElement.getAttribute('name');
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(settingValidation);
